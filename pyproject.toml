@@ -1,0 +1,18 @@
+[project]
+name = "knogen-fast-api"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "elasticsearch>=8.15.1",
+    "elasticsearch-dsl>=8.15.4",
+    "faker>=30.3.0",
+    "fastapi-cache2>=0.2.2",
+    "fastapi[standard]>=0.115.2",
+    "neo4j>=5.25.0",
+    "pymongo>=4.10.1",
+    "wikipedia-api>=0.7.1",
+    "zhconv>=1.4.3",
+    "ruff>=0.6.9",
+]
