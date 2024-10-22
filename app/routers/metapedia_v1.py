@@ -53,23 +53,23 @@ Lately_Query = UniqueQueue()
 
 class PageItemQuery(BaseModel):
     id: int
-    namespace: Optional[int]
-    title: Optional[str]
-    is_redirect: Optional[int]
-    len: Optional[int]
-    lang: Optional[str]
+    namespace: Optional[int]  = None
+    title: Optional[str]  = None
+    is_redirect: Optional[int]  = None
+    len: Optional[int]  = None
+    lang: Optional[str]  = None
 
 class PageItemDetail(BaseModel):
     id: int
     namespace: int
     title: str
-    zh_title: Optional[str]
+    zh_title: Optional[str]  = None
     is_redirect: int
-    len: int
+    len: Optional[int]  = None
     lang: str
     abstract: str
-    category: list[str]
-    redirect_from: Optional[str]
+    category: list[str]  = None
+    redirect_from: Optional[str]   = None
 
 class BaikeDemoQueryRequests(BaseModel):
     query: str
@@ -135,25 +135,26 @@ class BaikePageGetResponse(BaseModel):
         }
 
 class MetapediaPageItem(BaseModel):
-    id: Optional[int]
-    title: Optional[int]
-    lang: Optional[int]
-    redirect_from: Optional[str]
+    id: Optional[int] = None
+    title: Optional[str] = None
+    lang: Optional[str] = None
+    redirect_from: Optional[str] = None
 
     # zh_ID: Optional[int]
-    zh_title: Optional[str]
+    zh_title: Optional[str] = None
     # en_ID: Optional[int]
-    en_title: Optional[str]
-    zh_redirect: Optional[list[str]]
-    en_redirect: Optional[list[str]]
-    zh_category: Optional[list[str]]
-    en_category: Optional[list[str]]
+    en_title: Optional[str]= None
+    zh_redirect: Optional[list[str]] = None
+    en_redirect: Optional[list[str]]= None
+    zh_category: Optional[list[str]]= None
+    en_category: Optional[list[str]]= None
 
 
 # generate a wikipedia page
 class MetapediaPageGet:
     def __init__(self,title:str, lang: str):
         self.O = MetapediaPageItem()
+        
         self.O.title = title
         self.O.lang = lang
 
@@ -293,6 +294,7 @@ class MetapediaPageGet:
        
     def handle(self):
         doc = Database[f'{self.O.lang}_page'].find_one({"$or":[{"title": self.O.title},{"f_title": self.O.title}], 'namespace': 0 })
+
         if not doc:
             return None
         self.O.id = doc['_id']
@@ -360,6 +362,7 @@ class MetapediaPageGet:
             if doc:
                 self.O.zh_redirect = doc['redirect']
                 self.O.zh_category = doc['category']
+                
         
         return self.O
 
@@ -429,7 +432,7 @@ def bake_query(item:BaikeDemoQueryRequests):
 
 @router.post("/page")
 def query_page(item:BaikePageGetRequests):
-
+    
     result = get_page(item.title, item.lang)
     if not result:
         return {'data':'','ok':False}
@@ -457,7 +460,7 @@ def bake_page_query():
 class CategoryQueryRequests(BaseModel):
     lang: str
     title: str
-    page: Optional[int]
+    page: Optional[int]  = None
     class Config:
         json_schema_extra = {
             "example": {
@@ -638,9 +641,9 @@ def page_one_query(item:WikiPageDetailRequests):
         }
 
 class BaiduBaikeGetRequests(BaseModel):
-    title: list[str]
-    baidu_title: Optional[str]
-    data: Optional[dict]
+    title: list[str] = None
+    baidu_title: Optional[str] = None
+    data: Optional[dict] = None
 
 @router.post("/baidu_baike")
 def baidu_baike_post(item:BaiduBaikeGetRequests):

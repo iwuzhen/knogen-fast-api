@@ -49,7 +49,7 @@ class PageItemQuery(BaseModel):
     title: Optional[str]
     f_title: Optional[str]
     is_redirect: Optional[int]
-    len: Optional[int]
+    len: Optional[int] = None
     lang: Optional[str]
 
 class PageItemDetail(BaseModel):
@@ -58,7 +58,7 @@ class PageItemDetail(BaseModel):
     title: str
     zh_title: Optional[str]
     is_redirect: int
-    len: int
+    len: Optional[int] = None
     lang: str
     abstract: str
     category: list[str]
